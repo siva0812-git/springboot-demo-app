@@ -6,13 +6,16 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Demo App - CI/CD Pipeline
 
 on:
   push:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+env:
+  IMAGE_NAME: demo-app
+  DOCKERHUB_REPO: ${{ secrets.DOCKERHUB_USERNAME }}/demo-app
 
 jobs:
   build:
@@ -28,4 +31,31 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn clean package -DskipTests=false
+    - name: Run Tests
+      run: mvn test
+
+  docker:
+    name: Docker Build & Push
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t $DOCKERHUB_REPO:latest .
+          docker tag $DOCKERHUB_REPO:latest $DOCKERHUB_REPO:${{ github.sha }}
+
+      - name: Push Docker image
+        run: |
+          docker push $DOCKERHUB_REPO:latest
+          docker push $DOCKERHUB_REPO:${{ github.sha }}
