@@ -13,9 +13,6 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-env:
-  IMAGE_NAME: demo-app
-  DOCKERHUB_REPO: ${{ secrets.DOCKERHUB_USERNAME }}/demo-app
 
 jobs:
   build:
@@ -52,10 +49,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t demo-app:latest .
-          docker tag demo-app:latest $DOCKERHUB_REPO:${{ github.sha }}
+          docker build -t siva0812/demo-app:latest .
+          docker tag siva0812/demo-app:latest siva0812/demo-app:${{ github.sha }}
 
       - name: Push Docker image
         run: |
-          docker push $DOCKERHUB_REPO:latest
-          docker push $DOCKERHUB_REPO:${{ github.sha }}
+          docker push siva0812/demo-app:latest
+          docker push siva0812/demo-app:${{ github.sha }}
