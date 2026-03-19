@@ -29,6 +29,15 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn clean package -DskipTests=false
+      
+    - name: Debug target contents
+      run: ls -R target
+
+    - name: Upload JAR artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: demo-app
+        path: target/*.jar
 
   docker:
     name: Docker Build & Push
@@ -44,6 +53,9 @@ jobs:
         with:
           name: demo-app
           path: target
+
+      - name: Verify artifact
+        run: ls -R target
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
