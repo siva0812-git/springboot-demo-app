@@ -52,8 +52,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t $DOCKERHUB_REPO:latest .
-          docker tag $DOCKERHUB_REPO:latest $DOCKERHUB_REPO:${{ github.sha }}
+          docker build -t demo-app:latest .
+          docker tag demo-app:latest $DOCKERHUB_REPO:${{ github.sha }}
 
       - name: Push Docker image
         run: |
