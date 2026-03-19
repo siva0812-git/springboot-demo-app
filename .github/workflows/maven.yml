@@ -49,8 +49,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t siva0812/demo-app:latest .
-          docker tag siva0812/demo-app:latest siva0812/demo-app:${{ github.sha }}
+          docker build -t demo-app:latest .
+          docker tag demo-app:latest siva0812/demo-app:${{ github.sha }}
 
       - name: Push Docker image
         run: |
