@@ -70,5 +70,5 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker push siva0812/demo-app:latest
+          docker push demo-app:latest
           docker push siva0812/demo-app:${{ github.sha }}
