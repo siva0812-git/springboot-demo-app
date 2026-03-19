@@ -93,8 +93,5 @@ jobs:
             sudo docker pull $DOCKERHUB_REPO:latest
             sudo docker stop demo-app || true
             sudo docker rm demo-app || true
-            sudo docker run -d \
-              --name demo-app \
-              -p 8080:8080 \
-              $DOCKERHUB_REPO:latest
+            sudo docker run -d -p 8080:8080 $DOCKERHUB_REPO:latest
 
